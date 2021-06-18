@@ -1,0 +1,110 @@
+'\" t
+.\"     Title: git-archive
+.\"    Author: David Griffith <dave@661.org>
+.\" Generator: xxx
+.\"      Date: 06/18/2021
+.\"    Manual: xxx
+.\"    Source: xxx
+.\"  Language: English
+.\"
+.TH GIT\-ARCHIVE\-ALL "1" "06/18/2021"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+git-archive-all \- Create an archive of files from a named tree including submodules
+.SH "SYNOPSIS"
+.sp
+.nf
+\fIgit archive\-all\fR [\-\-format=<fmt>] [\-\-prefix=<prefix>/]
+		[\-\-\-verbose|\-v] [\-\-separate|\-s] [\-\-worktree-attributes]
+		[\-\-tree\-ish|\-t <tree\-ish>] [output_file]
+.fi
+.sp
+.SH "DESCRIPTION"
+.sp
+Builds an archive file(s) of all git repositories and submodules in the
+current path.  Useful for creating a single tarfile of a git
+superproject that contains other submodules.
+.SH "OPTIONS"
+.PP
+\-\-format=<fmt>
+.RS 4
+Format of the resulting archive:
+\fItar\fR
+or
+\fIzip\fR\&. If this option is not given, and the output file is
+specified, the format is inferred from the filename if possible
+(e\&.g\&. writing to "foo\&.zip " makes the output to be in the zip
+format)\&. Otherwise the output format is \fBtar\fR\&.
+.RE
+.PP
+\-\-prefix=<prefix>
+.RS 4
+Prepend <prefix>/ to each filename in the archive\&.
+.RE
+.PP
+\-\-worktree\-attributes
+.RS 4
+The archive's superproject and all submodules are greated with the
+<prefix> named\&.  The default is to not use one.
+.RE
+.PP
+\-s, \-\-separate
+.RS 4
+Individual archives will be created for each of the superproject itself
+and its submodules\&.  The default is concatenate individual archives
+into one larger archive\&.
+.RE
+.PP
+\-t <tree-ish>, \-\-tree-ish
+.RS 4
+The tree or commit to produce an archive for\&.  Defaults to HEAD if not
+specified.
+.RE
+.PP
+\-v, \-\-verbose
+.RS 4
+Print progress\&.
+.RE
+.PP
+[output_file]
+.RS 4
+The resulting archive is created as the file named\&.  This parameter is
+essentially a path that must be writeable\&. When combined with
+'\-\-separate' ('\-s') this path must refer to a directory\&. Without
+this parameter or when combined with '--separate' the resulting
+archive(s) are named with a dot-separated path of the archived directory
+and a file extension equal to their format (e.g.,
+'superdir\&.submodule1dir\&.tar')\&.
+.RE
+.PP
+The special value '\-' (single dash) is treated as STDOUT and, when
+used, the \-\-separate option is ignored\&.  Use a double\-dash to
+separate the outfile from the value of previous options\&.  For example,
+to write a \&.zip file to STDOUT:
+.RS 4
+git archive --format zip -- -
+.SH "EXAMPLES"
+.PP
+To create archive distributions from git repositories:
+.RS 4
+cd $GIT_DIR; git archive-all
+.RE
+where $GIT_DIR is the root of your git superproject\&.
